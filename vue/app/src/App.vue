@@ -13,7 +13,8 @@ div {
   padding: 20px;
 }
 .white-bg {
-  width: 100%;
+  width: 30vw;
+  margin: 0 auto;
   background: #fff;
   border-radius: 8px;
   padding: 20px;
@@ -22,6 +23,8 @@ div {
   background: darkslateblue;
   padding: 15px;
   border-radius: 5px;
+  position: fixed;
+  width: 100%;
 }
 
 .menu a {
@@ -31,6 +34,8 @@ div {
 
 .list {
   text-align: center;
+  width: 400px;
+  margin: auto;
 }
 
 .room-img {
@@ -44,31 +49,46 @@ div {
     <a v-for="(a, i) in nav" :key="i">{{ a }}</a>
   </div>
 
-  <div class="black-bg">
+  <div class="black-bg" v-if="모달창 == true">
     <div class="white-bg">
-      <h4>상세페이지입니다</h4>
-      <p>상세페이지내용</p>
+      <img :src="원룸들[누른거].image" alt="" class="room-img" />
+      <h4>{{ 원룸들[누른거].title }}</h4>
+      <p>{{ 원룸들[누른거].price }}</p>
+      <p>{{ 원룸들[누른거].content }}</p>
+      <p></p>
+      <button @click="모달창 = false">닫기</button>
     </div>
   </div>
 
-  <div v-for="(a, i) in products" :key="i">
-    <img src="./assets/images/room0.jpg" class="room-img" alt="" />
-    <h4>{{ a }}</h4>
-    <p>{{ price1[i] }}만원</p>
-    <button @click="report[i]++">허위매물신고</button>
-    <span>신고 수 : {{ report[i] }}</span>
+  <div v-for="(a, i) in 원룸들" :key="i" class="list">
+    <img
+      :src="원룸들[i].image"
+      class="room-img"
+      @click="
+        모달창 = true;
+        누른거 = i;
+      "
+    />
+    <h4>{{ 원룸들[i].title }}</h4>
+    <p>{{ 원룸들[i].price }}원</p>
   </div>
 </template>
 
 <script>
+import room from "./data/data";
+// import {apple,apple1} from "./data/data";
+
 export default {
   name: "App",
   data() {
     return {
+      원룸들: room,
+      누른거: 0,
       nav: ["Home", "Products", "About", "About", "About", "About"],
       price1: [60, 70, 80],
       products: ["역삼동 원룸", "천호동 원룸", "마포구원룸"],
       report: [0, 0, 0],
+      모달창: false,
     };
   },
   methods: {
